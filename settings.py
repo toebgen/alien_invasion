@@ -2,7 +2,7 @@
 class Settings():
     """ Class to store all setting for Alien Invasion """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         # Screen settings
         self.screen_width = 1200
         self.screen_height = 800
