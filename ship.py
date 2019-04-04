@@ -2,9 +2,10 @@ import pygame
 
 class Ship():
 
-    def __init__(self, screen):
+    def __init__(self, screen, settings):
         """ Initialize ship and set starting position """
         self.screen = screen
+        self.settings = settings
 
         # Load the image and get its rect
         self.image = pygame.transform.scale(
@@ -16,6 +17,25 @@ class Ship():
         # Start each new ship at the bottom of the screen
         self.rect.centerx = self.screen_rect.centerx
         self.rect.bottom = self.screen_rect.bottom
+
+        # Store decimal value for ship's center
+        self.center = float(self.rect.centerx)
+
+        # Movement flags
+        self.moving_right = False
+        self.moving_left = False
+
+
+    def update(self):
+        """ Update the ship's position based on the movement flag """
+        # Update ship's center valute, not the rect
+        if self.moving_right:
+            self.center += self.settings.ship_speed_factor
+        if self.moving_left:
+            self.center -= self.settings.ship_speed_factor
+
+        # Update rect from center
+        self.rect.centerx = self.center
 
     def blitme(self):
         """ Draw the ship at its current location """
