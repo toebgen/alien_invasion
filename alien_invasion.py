@@ -1,11 +1,13 @@
 import sys
-
 import pygame
 
+from settings import Settings
+
 def run_game():
-    # Initialize game and create a screen object
+    # Initialize settings, game and screen object
     pygame.init()
-    screen = pygame.display.set_mode((1200, 800))
+    settings = Settings()
+    screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
 
     # Set background color
@@ -19,7 +21,7 @@ def run_game():
                 sys.exit()
 
         # Make most recent screen visible
-        screen.fill(bg_color)
+        screen.fill(settings.bg_color)
         pygame.display.flip()
 
 run_game()
