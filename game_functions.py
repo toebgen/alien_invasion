@@ -25,7 +25,27 @@ def check_keyup_events(event, ship):
     if event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(settings, screen, ship, bullets):
+def check_play_button(settings, screen, stats, play_button,
+                      ship, aliens, bullets, mouse_x, mouse_y):
+    """ Start new game when the player clocks play """
+    button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and not stats.game_active:
+        # Hide mouse cursor
+        pygame.mouse.set_visible(False)
+
+        # Reset game statistics
+        stats.reset()
+        stats.game_active = True
+
+        # Empty list of bullets and aliens.
+        aliens.empty()
+        bullets.empty()
+
+        # Create a new fleet and center the ship
+        create_fleet(settings, screen, ship, aliens)
+        ship.center_ship()
+
+def check_events(settings, screen, stats, play_button, ship, aliens, bullets):
     """ Respond to keypresses and mouse events """
     # Check for keyboard input
     for event in pygame.event.get():
@@ -35,6 +55,10 @@ def check_events(settings, screen, ship, bullets):
             check_keydown_events(event, settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(settings, screen, stats, play_button,
+                              ship, aliens, bullets, mouse_x, mouse_y)
 
 def fire_bullet(settings, screen, ship, bullets):
     """ Fire a bullet if limit is not reached yet """
@@ -157,8 +181,10 @@ def ship_hit(settings, stats, screen, ship, aliens, bullets):
         sleep(0.5)
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
-def update_screen(settings, screen, ship, aliens, bullets):
+def update_screen(settings, screen, stats, ship, aliens,
+                  bullets, play_button):
     """ Update images on the screen and flip to new screen """
     screen.fill(settings.bg_color)
 
@@ -168,6 +194,10 @@ def update_screen(settings, screen, ship, aliens, bullets):
 
     aliens.draw(screen)
     ship.blitme()
+
+    # Draw the play button if the game is inactive
+    if not stats.game_active:
+        play_button.draw()
     
     # Make most recent screen visible
     pygame.display.flip()

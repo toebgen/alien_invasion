@@ -13,7 +13,7 @@ pygame
 ```
 
 ### Installing
-For Mac OS, follow https://stackoverflow.com/questions/29137369/installing-pygame-module-in-anaconda-mac.
+For Mac OS with Anaconda, follow https://stackoverflow.com/questions/29137369/installing-pygame-module-in-anaconda-mac.
 
 ## Screenshot
 Add screenshot here...
