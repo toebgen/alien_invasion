@@ -1,23 +1,27 @@
 # Alien Invasion
-
 Python Implementation of the Alien Invasion Game.
 Produced after "Python Crash Course" by Eric Matthes.
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
-What things you need to install the software and how to install them
+### Installing
+#### Mac OS
+On Mac OS with [homebrew](https://brew.sh) and [Anaconda](https://www.anaconda.com/distribution/), execute the following commands (largely taken from [here](https://stackoverflow.com/questions/29137369/installing-pygame-module-in-anaconda-mac)):
 ```
-pygame
+$ brew install hg sdl sdl_image sdl_ttf
+$ brew install sdl_mixer portmidi
+$ conda install anaconda-client
+$ conda install -c https://conda.binstar.org/quasiben pygame
 ```
 
-### Installing
-For Mac OS with Anaconda, follow https://stackoverflow.com/questions/29137369/installing-pygame-module-in-anaconda-mac.
+### Execution
+```
+$ python alien_invasion.py
+```
 
 ## Screenshot
-Add screenshot here...
-
+TODO Add screenshot here...
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+TODO
