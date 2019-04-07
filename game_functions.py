@@ -95,6 +95,7 @@ def check_bullet_alien_collisions(settings, screen, stats, scoreboard, ship,
         for aliens in collisions.values():
             stats.score += settings.alien_points * len(aliens)
             scoreboard.prep_score()
+        check_high_score(stats, scoreboard)
 
     if len(aliens) == 0:
         # Destroy existing bullets, speedup game and create new fleet
@@ -196,6 +197,12 @@ def ship_hit(settings, stats, screen, ship, aliens, bullets):
         stats.game_active = False
         pygame.mouse.set_visible(True)
 
+def check_high_score(stats, scoreboard):
+    """ Check to see if there's a new high score """
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        scoreboard.prep_high_score()
+        
 def update_screen(settings, screen, stats, scoreboard, ship, aliens,
                   bullets, play_button):
     """ Update images on the screen and flip to new screen """
