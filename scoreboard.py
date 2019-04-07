@@ -18,7 +18,32 @@ class Scoreboard():
         # Prepare initial score images
         self.prep_score()
         self.prep_high_score()
-    
+        self.prep_level()
+        
+    def prep_high_score(self):
+        """ Turn high score into rendered image """
+        high_score = int(round(self.stats.high_score, -1))
+        high_score_str = "{:,}".format(high_score)
+        self.high_score_image = self.font.render(high_score_str, True,
+                                                 self.text_color,
+                                                 self.settings.bg_color)
+        
+        # Center high score at top of the screen
+        self.high_score_rect = self.high_score_image.get_rect()
+        self.high_score_rect.centerx = self.screen_rect.centerx
+        self.high_score_rect.top = self.score_rect.top
+
+    def prep_level(self):
+        """ Turn the level into a rendered image """
+        self.level_image = self.font.render(str(self.stats.level), True,
+                                            self.text_color,
+                                            self.settings.bg_color)
+        
+        # Position the level below the score
+        self.level_rect = self.level_image.get_rect()
+        self.level_rect.right = self.score_rect.right
+        self.level_rect.top = self.score_rect.bottom + 10
+
     def prep_score(self):
         """ Turn score into a rendered image """
         rounded_score = int(round(self.stats.score, -1))
@@ -30,24 +55,10 @@ class Scoreboard():
         self.score_rect = self.score_img.get_rect()
         self.score_rect.right = self.screen_rect.right - 20
         self.score_rect.top = 20
-
-    def prep_high_score(self):
-        """ Turn high score into rendered image """
-        high_score = int(round(self.stats.high_score, -1))
-        high_score_str = "{:,}".format(high_score)
-        print('Scoreboard: self.stats.high_score=', self.stats.high_score,
-                'high_score_str=', high_score_str)
-        
-        self.high_score_image = self.font.render(high_score_str, True,
-                                                 self.text_color,
-                                                 self.settings.bg_color)
-        
-        # Center high score at top of the screen
-        self.high_score_rect = self.high_score_image.get_rect()
-        self.high_score_rect.centerx = self.screen_rect.centerx
-        self.high_score_rect.top = self.score_rect.top
         
     def show(self):
         """ Draw score to the screen """
-        self.screen.blit(self.score_img, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
+        self.screen.blit(self.level_image, self.level_rect)
+        self.screen.blit(self.score_img, self.score_rect)
+        

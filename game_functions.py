@@ -25,13 +25,18 @@ def check_keyup_events(event, ship):
     if event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_play_button(settings, screen, stats, play_button,
-                      ship, aliens, bullets, mouse_x, mouse_y):
+def check_play_button(settings, screen, stats, scoreboard, play_button, ship,
+                      aliens, bullets, mouse_x, mouse_y):
     """ Start new game when the player clocks play """
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
         # Reset the game settings
         settings.initialize_dynamic_settings()
+
+        # Reset scoreboard images
+        scoreboard.prep_high_score()
+        scoreboard.prep_level()
+        scoreboard.prep_score()
         
         # Hide mouse cursor
         pygame.mouse.set_visible(False)
@@ -48,7 +53,8 @@ def check_play_button(settings, screen, stats, play_button,
         create_fleet(settings, screen, ship, aliens)
         ship.center_ship()
 
-def check_events(settings, screen, stats, play_button, ship, aliens, bullets):
+def check_events(settings, screen, stats, scoreboard, play_button, ship,
+                 aliens, bullets):
     """ Respond to keypresses and mouse events """
     # Check for keyboard input
     for event in pygame.event.get():
@@ -60,7 +66,7 @@ def check_events(settings, screen, stats, play_button, ship, aliens, bullets):
             check_keyup_events(event, ship)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(settings, screen, stats, play_button,
+            check_play_button(settings, screen, stats, scoreboard, play_button,
                               ship, aliens, bullets, mouse_x, mouse_y)
 
 def fire_bullet(settings, screen, ship, bullets):
@@ -98,6 +104,10 @@ def check_bullet_alien_collisions(settings, screen, stats, scoreboard, ship,
         check_high_score(stats, scoreboard)
 
     if len(aliens) == 0:
+        # Start a new level!
+        stats.level += 1
+        scoreboard.prep_level()
+
         # Destroy existing bullets, speedup game and create new fleet
         bullets.empty()
         settings.increase_speed()
