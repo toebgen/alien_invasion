@@ -25,7 +25,7 @@ def run_game():
     scoreboard = Scoreboard(settings, screen, stats)
 
     # Make a ship
-    ship = Ship(screen, settings)
+    ship = Ship(settings, screen)
     # Make a group for storing bullets
     bullets = Group()
     # Make a group of aliens
@@ -41,7 +41,8 @@ def run_game():
             ship.update()
             game_functions.update_bullets(settings, screen, ship, stats,
                                           scoreboard, aliens, bullets)
-            game_functions.update_aliens(settings, stats, screen, ship, aliens, bullets)
+            game_functions.update_aliens(settings, screen, stats, scoreboard,
+                                         ship, aliens, bullets)
         
         game_functions.update_screen(settings, screen, stats, scoreboard, ship,
                                      aliens, bullets, play_button)

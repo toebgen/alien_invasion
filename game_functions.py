@@ -28,23 +28,23 @@ def check_keyup_events(event, ship):
 def check_play_button(settings, screen, stats, scoreboard, play_button, ship,
                       aliens, bullets, mouse_x, mouse_y):
     """ Start new game when the player clocks play """
+    # TODO Countdown 3-2-1 before start of new level
+
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
         # Reset the game settings
         settings.initialize_dynamic_settings()
 
-        # Reset scoreboard images
-        scoreboard.prep_high_score()
-        scoreboard.prep_level()
-        scoreboard.prep_score()
-        
-        # Hide mouse cursor
-        pygame.mouse.set_visible(False)
-
         # Reset game statistics
         stats.reset()
         stats.game_active = True
 
+        # Reset scoreboard images
+        scoreboard.prep_score()
+        scoreboard.prep_high_score()
+        scoreboard.prep_level()
+        scoreboard.prep_ships()
+        
         # Empty list of bullets and aliens.
         aliens.empty()
         bullets.empty()
@@ -52,6 +52,10 @@ def check_play_button(settings, screen, stats, scoreboard, play_button, ship,
         # Create a new fleet and center the ship
         create_fleet(settings, screen, ship, aliens)
         ship.center_ship()
+
+        # Hide mouse cursor
+        pygame.mouse.set_visible(False)
+
 
 def check_events(settings, screen, stats, scoreboard, play_button, ship,
                  aliens, bullets):
@@ -75,6 +79,7 @@ def fire_bullet(settings, screen, ship, bullets):
     if len(bullets) < settings.bullets_allowed:
         new_bullet = Bullet(settings, screen, ship)
         bullets.add(new_bullet)
+        # TODO Display message about max number of bullets
 
 def update_bullets(settings, screen, ship, stats, scoreboard, aliens, bullets):
     """ Update position of bullets and get rid of old bullets """
@@ -113,13 +118,15 @@ def check_bullet_alien_collisions(settings, screen, stats, scoreboard, ship,
         settings.increase_speed()
         create_fleet(settings, screen, ship, aliens)
 
-def check_aliens_bottom(settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(settings, screen, stats, scoreboard, ship, aliens,
+                        bullets):
     """ Check if any aliens habe reached the bottom of the screen """
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen.get_rect().bottom:
             # Treat hits the same as if ship got hit
             print('Alien has reached the bottom!')
-            ship_hit(settings, stats, screen, ship, aliens, bullets)
+            ship_hit(settings, screen, stats, scoreboard, ship, aliens,
+                     bullets)
             break
 
 def get_number_aliens_x(settings, alien_width):
@@ -171,7 +178,7 @@ def change_fleet_direction(settings, aliens):
         alien.rect.y += settings.fleet_drop_speed
     settings.fleet_direction *= -1
 
-def update_aliens(settings, stats, screen, ship, aliens, bullets):
+def update_aliens(settings, screen, stats, scoreboard, ship, aliens, bullets):
     """
     Check if the fleet is at an edge,
     then update the positions of all aliens in the fleet
@@ -181,17 +188,20 @@ def update_aliens(settings, stats, screen, ship, aliens, bullets):
 
     # Look for alien ship collisions
     if pygame.sprite.spritecollideany(ship, aliens):
-        print("Ship hit!")
-        ship_hit(settings, stats, screen, ship, aliens, bullets)
+        ship_hit(settings, screen, stats, scoreboard, ship, aliens, bullets)
     
     # Look for aliens hitting the bottom of the screen
-    check_aliens_bottom(settings, stats, screen, ship, aliens, bullets)
+    check_aliens_bottom(settings, screen, stats, scoreboard, ship, aliens,
+                        bullets)
 
-def ship_hit(settings, stats, screen, ship, aliens, bullets):
+def ship_hit(settings, screen, stats, scoreboard, ship, aliens, bullets):
     """ Respond to ship being hit by alien """
     if stats.ships_left > 0:
         # Decrement ships_left
         stats.ships_left -= 1
+
+        # Update scoreboard
+        scoreboard.prep_ships()
 
         # Empty the list of aliens and bullets
         aliens.empty()

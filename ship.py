@@ -1,9 +1,12 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
 
-    def __init__(self, screen, settings):
+class Ship(Sprite):
+
+    def __init__(self, settings, screen):
         """ Initialize ship and set starting position """
+        super().__init__()
         self.screen = screen
         self.settings = settings
 
@@ -12,7 +15,7 @@ class Ship():
             pygame.image.load('images/ship.bmp'),
             [60,30])
         self.rect = self.image.get_rect()
-        self.screen_rect = screen.get_rect()
+        self.screen_rect = self.screen.get_rect()
 
         # Start each new ship at the bottom of the screen
         self.rect.centerx = self.screen_rect.centerx
