@@ -3,7 +3,7 @@ Python Implementation of the Alien Invasion Game.
 Produced after "Python Crash Course" by Eric Matthes.
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and running on your local machine for playing and development purposes.
 
 ### Installing
 #### Mac OS
@@ -24,4 +24,4 @@ $ python alien_invasion.py
 ![Image not found](images/screenshot_1.png "Screenshot")
 
 ## License
-TODO
+See [LICENSE](LICENSE)
