@@ -21,7 +21,7 @@ $ python alien_invasion.py
 ```
 
 ## Screenshot
-TODO Add screenshot here...
+![Image not found](images/screenshot_1.png "Screenshot")
 
 ## License
 TODO

@@ -13,10 +13,10 @@ class Settings():
         self.fleet_drop_speed = 64
         
         # Bullet settings
-        self.bullet_width = 1150
+        self.bullet_width = 3
         self.bullet_height = 15
         self.bullet_color = 60, 60, 60
-        self.bullets_allowed = 3
+        self.bullets_allowed = 5
 
         # Ship settings
         self.ship_limit = 3
